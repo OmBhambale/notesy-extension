@@ -12,7 +12,7 @@ Notesy is a lightweight, minimal notes extension for Chrome, specifically design
 - Keyboard shortcut (`Ctrl+Shift+N`) for quick access.
 
 ## License & Copyright
-**© 2026 [Your Name/Company Name]. All Rights Reserved.**
+**© 2026 [Om Bhambale]. All Rights Reserved.**
 
 This project is proprietary software. No part of this software may be copied, modified, distributed, or used without the explicit written permission of the owner. Any unauthorized use is strictly prohibited.
 
