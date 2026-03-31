@@ -25,9 +25,10 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Handle exiting code blocks on double Enter
+    // Handle exiting code blocks on Alt + Enter (Left or Right Alt)
     notesArea.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter') {
+        // e.altKey handles standard Alt, e.key === 'AltGraph' handles some Right Alt variants
+        if (e.key === 'Enter' && (e.altKey || e.getModifierState('AltGraph'))) {
             const selection = window.getSelection();
             if (!selection.rangeCount) return;
             
@@ -37,43 +38,27 @@ document.addEventListener('DOMContentLoaded', () => {
                 : range.startContainer.closest('pre');
 
             if (pre) {
-                const text = pre.textContent;
-                const caretPos = range.startOffset;
+                e.preventDefault();
                 
-                // Check if current line is empty (user pressed Enter on a line with no text)
-                const lines = text.split('\n');
-                // This is a simplified check: if the last character typed was a newline
-                // and the user presses Enter again, we break out.
-                if (text.endsWith('\n') || text.endsWith('\n ')) {
-                    e.preventDefault();
-                    
-                    // 1. Clean up the pre block (remove the trailing newline)
-                    pre.textContent = text.trimEnd();
-                    
-                    // 2. Create a new paragraph after the pre block
-                    const p = document.createElement('p');
-                    p.innerHTML = '<br>';
-                    
-                    // 3. Insert after the code block
-                    if (pre.nextSibling) {
-                        pre.parentNode.insertBefore(p, pre.nextSibling);
-                    } else {
-                        pre.parentNode.appendChild(p);
-                    }
-                    
-                    // 4. Force move cursor to the new paragraph
-                    const newRange = document.createRange();
-                    newRange.setStart(p, 0);
-                    newRange.collapse(true);
-                    selection.removeAllRanges();
-                    selection.addRange(newRange);
-                    
-                    // 5. Ensure the scroll follows the cursor
-                    p.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-                    
-                    // 6. Trigger auto-save
-                    saveNotes(notesArea.innerHTML);
+                // Create new paragraph after the pre block
+                const p = document.createElement('p');
+                p.innerHTML = '<br>';
+                
+                if (pre.nextSibling) {
+                    pre.parentNode.insertBefore(p, pre.nextSibling);
+                } else {
+                    pre.parentNode.appendChild(p);
                 }
+                
+                // Move cursor to the new paragraph
+                const newRange = document.createRange();
+                newRange.setStart(p, 0);
+                newRange.collapse(true);
+                selection.removeAllRanges();
+                selection.addRange(newRange);
+                
+                p.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                saveNotes(notesArea.innerHTML);
             }
         }
     });
