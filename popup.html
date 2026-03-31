@@ -30,12 +30,20 @@
             <option value="pre">Code Block</option>
         </select>
         <div class="v-divider"></div>
+        <select id="align-block" class="format-select">
+            <option value="justifyLeft">Left</option>
+            <option value="justifyCenter">Center</option>
+            <option value="justifyRight">Right</option>
+            <option value="justifyFull">Justify</option>
+        </select>
+        <div class="v-divider"></div>
         <button class="format-btn" data-command="bold" title="Bold"><b>B</b></button>
         <button class="format-btn" data-command="italic" title="Italic"><i>I</i></button>
         <button class="format-btn" data-command="fontName" data-value="monospace" title="Monospace">M</button>
         <div class="v-divider"></div>
         <button class="format-btn" data-command="insertUnorderedList" title="Bullets">•</button>
         <button class="format-btn" data-command="insertOrderedList" title="Numbers">1.</button>
+        <button class="format-btn" data-command="removeFormat" title="Clear Formatting"><u>T</u>x</button>
         <div class="v-divider"></div>
         <button id="insert-timestamp" class="format-btn" title="Timestamp">Time</button>
     </nav>

@@ -25,6 +25,59 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+    // Handle exiting code blocks on double Enter
+    notesArea.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+            const selection = window.getSelection();
+            if (!selection.rangeCount) return;
+            
+            const range = selection.getRangeAt(0);
+            const pre = range.startContainer.nodeType === 3 
+                ? range.startContainer.parentElement.closest('pre') 
+                : range.startContainer.closest('pre');
+
+            if (pre) {
+                const text = pre.textContent;
+                const caretPos = range.startOffset;
+                
+                // Check if current line is empty (user pressed Enter on a line with no text)
+                const lines = text.split('\n');
+                // This is a simplified check: if the last character typed was a newline
+                // and the user presses Enter again, we break out.
+                if (text.endsWith('\n') || text.endsWith('\n ')) {
+                    e.preventDefault();
+                    
+                    // 1. Clean up the pre block (remove the trailing newline)
+                    pre.textContent = text.trimEnd();
+                    
+                    // 2. Create a new paragraph after the pre block
+                    const p = document.createElement('p');
+                    p.innerHTML = '<br>';
+                    
+                    // 3. Insert after the code block
+                    if (pre.nextSibling) {
+                        pre.parentNode.insertBefore(p, pre.nextSibling);
+                    } else {
+                        pre.parentNode.appendChild(p);
+                    }
+                    
+                    // 4. Force move cursor to the new paragraph
+                    const newRange = document.createRange();
+                    newRange.setStart(p, 0);
+                    newRange.collapse(true);
+                    selection.removeAllRanges();
+                    selection.addRange(newRange);
+                    
+                    // 5. Ensure the scroll follows the cursor
+                    p.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                    
+                    // 6. Trigger auto-save
+                    saveNotes(notesArea.innerHTML);
+                }
+            }
+        }
+    });
+
     // Formatting Commands
     document.querySelectorAll('.format-btn[data-command]').forEach(btn => {
         btn.addEventListener('click', () => {
@@ -37,6 +90,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     document.getElementById('format-block').addEventListener('change', (e) => {
         document.execCommand('formatBlock', false, e.target.value);
+        notesArea.focus();
+    });
+
+    document.getElementById('align-block').addEventListener('change', (e) => {
+        document.execCommand(e.target.value, false, null);
         notesArea.focus();
     });
 

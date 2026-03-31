@@ -1,29 +1,30 @@
 {
   "manifest_version": 3,
-  "name": "Notesy - Notes Taking Extension",
-  "version": "1.1.0",
-  "description": "A lightweight, minimal notes extension for focused study sessions. To learn more, visit our GitHub repository : https://github.com/OmBhambale/notesy-extension?tab=readme-ov-file",
-  "action": {
-    "default_popup": "popup.html",
-    "default_icon": {
-      "16": "icons/icon16.png",
-      "48": "icons/icon48.png",
-      "128": "icons/icon128.png"
-    }
-  },
+  "name": "Notesy - Study Companion",
+  "version": "1.0.0",
+  "description": "A lightweight, minimal notes extension for focused study sessions.",
   "icons": {
     "16": "icons/icon16.png",
     "48": "icons/icon48.png",
     "128": "icons/icon128.png"
   },
-  "permissions": ["storage"],
+  "permissions": ["storage", "sidePanel"],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_title": "Open Notesy Side Panel"
+  },
+  "side_panel": {
+    "default_path": "popup.html"
+  },
   "commands": {
     "_execute_action": {
       "suggested_key": {
         "default": "Ctrl+Shift+N",
         "mac": "Command+Shift+N"
       },
-      "description": "Open Notesy Popup"
+      "description": "Open Notesy"
     }
   }
 }

@@ -31,8 +31,9 @@ body.dark-mode {
 }
 
 body {
-    width: 420px;
-    height: 520px;
+    width: 500px; /* Increased from 420px for a more spacious feel */
+    height: 100vh;
+    margin: 0 auto;
     background-color: var(--bg-color);
     color: var(--text-primary);
     display: flex;
@@ -41,10 +42,15 @@ body {
     transition: background-color 0.3s ease;
 }
 
+/* Ensure the HTML container also allows for the height */
+html {
+    height: 100vh;
+}
+
 /* Toolbar */
 .toolbar {
-    height: 60px;
-    padding: 0 20px;
+    height: 54px;
+    padding: 0 15px;
     background-color: var(--card-bg);
     display: flex;
     align-items: center;
@@ -57,20 +63,20 @@ body {
 .logo-section {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 8px;
 }
 
 .logo {
-    font-size: 20px;
+    font-size: 18px;
     font-weight: 700;
     color: var(--accent-color);
 }
 
 .status-indicator {
-    font-size: 11px;
+    font-size: 10px;
     color: var(--text-secondary);
     background: var(--input-focus);
-    padding: 2px 8px;
+    padding: 2px 6px;
     border-radius: 12px;
     opacity: 1;
     transition: opacity 0.3s ease;
@@ -82,13 +88,13 @@ body {
 
 .action-group {
     display: flex;
-    gap: 8px;
+    gap: 4px;
 }
 
 .icon-btn {
     background: none;
     border: none;
-    padding: 8px;
+    padding: 6px;
     border-radius: 8px;
     cursor: pointer;
     color: var(--text-secondary);
@@ -112,19 +118,21 @@ body {
 .formatting-bar {
     display: flex;
     align-items: center;
-    gap: 4px;
-    padding: 8px 15px;
+    gap: 2px;
+    padding: 6px 8px;
     background-color: var(--card-bg);
     border-bottom: 1px solid var(--border-color);
+    flex-wrap: wrap;
 }
 
 .format-select {
-    padding: 4px 8px;
+    padding: 3px 4px;
     border-radius: 6px;
     border: 1px solid var(--border-color);
     background: var(--bg-color);
     color: var(--text-primary);
-    font-size: 12px;
+    font-size: 11px;
+    max-width: 100px;
     outline: none;
     cursor: pointer;
 }
@@ -132,13 +140,13 @@ body {
 .format-btn {
     background: none;
     border: none;
-    padding: 4px 8px;
+    padding: 4px 6px;
     border-radius: 6px;
     cursor: pointer;
     color: var(--text-secondary);
-    font-size: 14px;
+    font-size: 12px;
     transition: all 0.2s;
-    min-width: 28px;
+    min-width: 24px;
 }
 
 .format-btn:hover {
@@ -156,17 +164,24 @@ body {
 /* Editor */
 .editor-container {
     flex: 1;
+    display: flex;
+    flex-direction: column;
     overflow-y: auto;
     background: var(--card-bg);
+    min-height: 200px;
 }
 
 #notes-area {
+    flex: 1;
+    display: block;
+    width: 100%;
     min-height: 100%;
     padding: 20px;
     outline: none;
     font-size: 15px;
     line-height: 1.6;
     color: var(--text-primary);
+    background: var(--card-bg);
 }
 
 #notes-area[contenteditable]:empty:before {
