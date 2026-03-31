@@ -14,8 +14,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // Load saved notes, theme, and last used filename
     chrome.storage.local.get(['notes', 'darkMode', 'lastFilename'], (result) => {
         if (result.notes) {
-            notesArea.value = result.notes;
-            updateWordCount(result.notes);
+            notesArea.innerHTML = result.notes;
+            updateWordCount(notesArea.innerText);
         }
         if (result.darkMode) {
             document.body.classList.add('dark-mode');
@@ -25,10 +25,25 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+    // Formatting Commands
+    document.querySelectorAll('.format-btn[data-command]').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const command = btn.getAttribute('data-command');
+            const value = btn.getAttribute('data-value') || null;
+            document.execCommand(command, false, value);
+            notesArea.focus();
+        });
+    });
+
+    document.getElementById('format-block').addEventListener('change', (e) => {
+        document.execCommand('formatBlock', false, e.target.value);
+        notesArea.focus();
+    });
+
     // Auto-save logic (Debounced)
     notesArea.addEventListener('input', () => {
-        const content = notesArea.value;
-        updateWordCount(content);
+        const content = notesArea.innerHTML;
+        updateWordCount(notesArea.innerText);
         
         clearTimeout(autoSaveTimeout);
         autoSaveTimeout = setTimeout(() => {
@@ -68,7 +83,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Clear Notes
     clearBtn.addEventListener('click', () => {
         if (confirm('Are you sure you want to clear all notes? This cannot be undone.')) {
-            notesArea.value = '';
+            notesArea.innerHTML = '';
             updateWordCount('');
             saveNotes('');
         }
@@ -77,26 +92,20 @@ document.addEventListener('DOMContentLoaded', () => {
     // Insert Timestamp
     timestampBtn.addEventListener('click', () => {
         const now = new Date();
-        const timestamp = `\n[${now.toLocaleString()}]\n`;
-        const start = notesArea.selectionStart;
-        const end = notesArea.selectionEnd;
-        const text = notesArea.value;
-        
-        notesArea.value = text.substring(0, start) + timestamp + text.substring(end);
+        const timestamp = `[${now.toLocaleString()}] `;
+        document.execCommand('insertText', false, timestamp);
         notesArea.focus();
-        notesArea.selectionStart = notesArea.selectionEnd = start + timestamp.length;
-        
-        saveNotes(notesArea.value);
     });
 
     // Export PDF
     downloadPdfBtn.addEventListener('click', () => {
-        const content = notesArea.value;
+        const content = notesArea.innerHTML;
+        const plainText = notesArea.innerText;
         const filename = filenameInput.value.trim();
-        if (!content.trim()) return alert('Nothing to export!');
+        if (!plainText.trim()) return alert('Nothing to export!');
         
         if (typeof exportToPDF === 'function') {
-            exportToPDF(content, filename);
+            exportToPDF(content, filename); // Passing HTML to PDF utility
         } else {
             console.error('PDF export utility not loaded');
         }
@@ -104,12 +113,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Export DOCX
     downloadDocxBtn.addEventListener('click', () => {
-        const content = notesArea.value;
+        const content = notesArea.innerHTML;
+        const plainText = notesArea.innerText;
         const filename = filenameInput.value.trim();
-        if (!content.trim()) return alert('Nothing to export!');
+        if (!plainText.trim()) return alert('Nothing to export!');
         
         if (typeof exportToDOCX === 'function') {
-            exportToDOCX(content, filename);
+            exportToDOCX(content, filename); // Passing HTML to DOCX utility
         } else {
             console.error('DOCX export utility not loaded');
         }

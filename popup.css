@@ -108,32 +108,99 @@ body {
     background-color: rgba(239, 68, 68, 0.1);
 }
 
+/* Formatting Bar */
+.formatting-bar {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 8px 15px;
+    background-color: var(--card-bg);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.format-select {
+    padding: 4px 8px;
+    border-radius: 6px;
+    border: 1px solid var(--border-color);
+    background: var(--bg-color);
+    color: var(--text-primary);
+    font-size: 12px;
+    outline: none;
+    cursor: pointer;
+}
+
+.format-btn {
+    background: none;
+    border: none;
+    padding: 4px 8px;
+    border-radius: 6px;
+    cursor: pointer;
+    color: var(--text-secondary);
+    font-size: 14px;
+    transition: all 0.2s;
+    min-width: 28px;
+}
+
+.format-btn:hover {
+    background-color: var(--bg-color);
+    color: var(--accent-color);
+}
+
+.v-divider {
+    width: 1px;
+    height: 16px;
+    background-color: var(--border-color);
+    margin: 0 4px;
+}
+
 /* Editor */
 .editor-container {
     flex: 1;
-    padding: 10px;
-    overflow: hidden;
-    display: flex;
+    overflow-y: auto;
+    background: var(--card-bg);
 }
 
-textarea {
-    flex: 1;
-    width: 100%;
-    border: none;
-    background: transparent;
-    color: var(--text-primary);
+#notes-area {
+    min-height: 100%;
+    padding: 20px;
+    outline: none;
     font-size: 15px;
     line-height: 1.6;
-    padding: 15px;
-    resize: none;
-    outline: none;
-    scrollbar-width: thin;
-    scrollbar-color: var(--border-color) transparent;
+    color: var(--text-primary);
 }
 
-textarea::placeholder {
+#notes-area[contenteditable]:empty:before {
+    content: attr(placeholder);
     color: var(--text-secondary);
     opacity: 0.5;
+}
+
+/* Styles inside editor */
+#notes-area blockquote {
+    border-left: 3px solid var(--accent-color);
+    padding-left: 15px;
+    margin: 10px 0;
+    color: var(--text-secondary);
+    font-style: italic;
+}
+
+#notes-area pre {
+    background: var(--bg-color);
+    padding: 10px;
+    border-radius: 6px;
+    font-family: monospace;
+    overflow-x: auto;
+    margin: 10px 0;
+}
+
+#notes-area h4 {
+    margin: 15px 0 5px 0;
+    color: var(--accent-color);
+}
+
+#notes-area ul, #notes-area ol {
+    padding-left: 20px;
+    margin: 10px 0;
 }
 
 /* Footer */

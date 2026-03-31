@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
   "name": "Notesy - Notes Taking Extension",
-  "version": "1.0.0",
-  "description": "A lightweight, minimal notes extension for focused study sessions.",
+  "version": "1.1.0",
+  "description": "A lightweight, minimal notes extension for focused study sessions. To learn more, visit our GitHub repository : https://github.com/OmBhambale/notesy-extension?tab=readme-ov-file",
   "action": {
     "default_popup": "popup.html",
     "default_icon": {
